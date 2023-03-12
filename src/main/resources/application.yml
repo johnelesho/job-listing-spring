@@ -2,7 +2,10 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost/joblisting
+      auto-index-creation: true
+      database: joblisting
+      host: localhost
+
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER

@@ -9,6 +9,7 @@ import com.mongodb.client.MongoDatabase;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.stereotype.Repository;
 
@@ -24,11 +25,15 @@ public class SearchRepositoryImpl implements SearchRepository{
 
     final MongoConverter converter;
 
+   @Value("${spring.data.mongodb.database:joblisting}")
+    String dbName;
+
     @Override
     public List<JobPost> findBySearchTerm(@NotNull SearchDto searchBody ) {
         List<JobPost> posts = new ArrayList<>();
 
-        MongoDatabase db = client.getDatabase("joblisting");
+
+        MongoDatabase db = client.getDatabase(dbName);
         MongoCollection<Document> collection = db.getCollection("job_post");
 
         AggregateIterable<Document> result = collection.aggregate(Arrays.asList(
